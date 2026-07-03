@@ -5,7 +5,7 @@ export default function Header({ query, setQuery, chips, removeChip, onQueryKeyD
 
   return (
     <header className="sticky top-0 z-30 backdrop-blur-md bg-white/85 border-b border-[color:var(--color-hairline)]">
-      <div className="max-w-[1440px] mx-auto px-4 sm:px-6 py-3 flex items-center gap-3 sm:gap-6 flex-wrap md:flex-nowrap">
+      <div style={{ justifyContent: "space-between" }} className="mx-auto px-4 sm:px-6 py-3 flex items-center gap-3 sm:gap-6 flex-wrap md:flex-nowrap">
         {/* Logo */}
         <div className="flex items-center gap-2.5 shrink-0">
           <div className="w-9 h-9 rounded-xl bg-[color:var(--color-ink)] text-white flex items-center justify-center text-base">

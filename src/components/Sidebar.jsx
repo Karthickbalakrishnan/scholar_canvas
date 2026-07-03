@@ -38,9 +38,9 @@ function TimelineMatrix({ yearRange, setYearRange }) {
         <span className="text-[13px] font-semibold text-[color:var(--color-ink)]">{hi}</span>
       </div>
       <div className="relative h-5">
-        <div className="absolute top-1/2 -translate-y-1/2 w-full h-1 rounded-full bg-black/[0.06]" />
+        <div className=" top-1/2 -translate-y-1/2 w-full h-1 rounded-full bg-black/[0.06]" />
         <div
-          className="absolute top-1/2 -translate-y-1/2 h-1 rounded-full bg-[color:var(--color-accent)]"
+          className=" top-1/2 -translate-y-1/2 h-1 rounded-full bg-[color:var(--color-accent)]"
           style={{ left: `${loPct}%`, right: `${100 - hiPct}%` }}
         />
         <input

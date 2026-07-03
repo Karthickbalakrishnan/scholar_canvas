@@ -23,7 +23,8 @@ function labelForKey(key) {
 export default function App() {
   const [query, setQuery] = useState("");
   const [searchChips, setSearchChips] = useState([]);
-  const [yearRange, setYearRange] = useState([2023, 2026]);
+  // Fix 1: Timeline matrix adjusted to last 10 years (2016-2026)
+  const [yearRange, setYearRange] = useState([2016, 2026]);
   const [region, setRegion] = useState("World");
   const [selectedAreas, setSelectedAreas] = useState(new Set());
   const [rankFilters, setRankFilters] = useState(new Set(["emerging", "established"]));
@@ -152,7 +153,7 @@ export default function App() {
   }, [yearRange, region, selectedAreas, rankFilters, artifactFilters, searchTerms]);
 
   return (
-    <div className="min-h-screen bg-[color:var(--color-canvas)]">
+    <div className="min-h-screen bg-[color:var(--color-canvas)] antialiased transition-colors duration-200">
       <Header
         query={query}
         setQuery={setQuery}
@@ -161,16 +162,24 @@ export default function App() {
         onQueryKeyDown={handleQueryKeyDown}
       />
 
-      <div className="max-w-[1440px] mx-auto px-4 sm:px-6 py-6 flex flex-col lg:flex-row gap-6 items-start">
-        <button
-          onClick={() => setFiltersOpen((v) => !v)}
-          className="lg:hidden w-full flex items-center justify-between bg-[color:var(--color-card)] rounded-2xl border border-[color:var(--color-hairline)] shadow-[var(--shadow-apple-lux)] px-4 py-3 text-[13px] font-medium text-[color:var(--color-ink)]"
-        >
-          Filters
-          <span className={`text-[color:var(--color-ink-faint)] transition-transform ${filtersOpen ? "rotate-180" : ""}`}>⌄</span>
-        </button>
+      {/* Fix 3: Global responsive layout wrapper with explicit content containment alignment */}
+      <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-6 flex flex-col lg:flex-row gap-6 items-start items-stretch">
+        
+        {/* Responsive Mobile Filter Trigger Button with polished Alignment */}
+        <div className="w-full lg:hidden">
+          <button
+            onClick={() => setFiltersOpen((v) => !v)}
+            className="w-full flex items-center justify-between bg-[color:var(--color-card)] rounded-xl border border-[color:var(--color-hairline)] shadow-[var(--shadow-apple-lux)] px-4 py-3 text-[13px] font-semibold text-[color:var(--color-ink)] transition-all hover:bg-opacity-90"
+          >
+            <span>{filtersOpen ? "Hide Advanced Filters" : "Show Advanced Filters"}</span>
+            <span className={`text-[color:var(--color-ink-faint)] transition-transform duration-200 dynamic-chevron ${filtersOpen ? "rotate-180" : ""}`}>
+              ▼
+            </span>
+          </button>
+        </div>
 
-        <div className={`${filtersOpen ? "block" : "hidden"} lg:block w-full lg:w-auto`}>
+        {/* Sidebar wrapper providing explicit constraints for layout stabilization */}
+        <div className={`${filtersOpen ? "block" : "hidden"} lg:block w-full lg:w-80 shrink-0`}>
           <Sidebar
             yearRange={yearRange}
             setYearRange={setYearRange}
@@ -185,18 +194,29 @@ export default function App() {
           />
         </div>
 
-        <main className="flex-1 min-w-0 w-full flex flex-col gap-4">
-          <div className="flex items-start gap-4 flex-wrap xl:flex-nowrap">
-            <div className="flex-1 min-w-[260px] bg-[color:var(--color-card)] rounded-2xl border border-[color:var(--color-hairline)] shadow-[var(--shadow-apple-lux)] px-5 py-4 flex items-center">
-              <p className="text-[13.5px] text-[color:var(--color-ink)]">
-                Displaying <span className="font-semibold">{rows.length}</span> active institutions. Sorted by{" "}
-                <span className="font-semibold">Publication Volume</span>.
+        {/* Core Workspace Board Area */}
+        <main className="flex-1 min-w-0 w-full flex flex-col gap-6">
+          
+          {/* Dashboard Metric Matrix Block to balance display text and TrendRadar */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-stretch">
+            <div className="md:col-span-1 bg-[color:var(--color-card)] rounded-xl border border-[color:var(--color-hairline)] shadow-[var(--shadow-apple-lux)] p-5 flex flex-col justify-center">
+              <span className="text-[11px] font-bold uppercase tracking-wider text-[color:var(--color-ink-faint)] mb-1">
+                Data Context Status
+              </span>
+              <p className="text-[14px] leading-relaxed text-[color:var(--color-ink)]">
+                Displaying <span className="font-bold text-blue-600 dark:text-blue-400">{rows.length}</span> active academic institutions. Sorted algorithmically by <span className="font-semibold underline decoration-2 decoration-indigo-500">Publication Volume</span>.
               </p>
             </div>
-            <TrendRadar />
+            
+            <div className="md:col-span-2 bg-[color:var(--color-card)] rounded-xl border border-[color:var(--color-hairline)] shadow-[var(--shadow-apple-lux)] p-1 overflow-hidden flex items-center justify-center">
+              <TrendRadar />
+            </div>
           </div>
 
-          <Leaderboard rows={rows} onOpenLineage={setLineageFaculty} onAction={pushToast} />
+          {/* Core App Leaderboard display */}
+          <div className="bg-[color:var(--color-card)] rounded-xl border border-[color:var(--color-hairline)] shadow-[var(--shadow-apple-lux)] overflow-hidden">
+            <Leaderboard rows={rows} onOpenLineage={setLineageFaculty} onAction={pushToast} />
+          </div>
         </main>
       </div>
 

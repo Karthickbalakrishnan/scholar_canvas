@@ -1,3 +1,10 @@
+/*
+Copyright (c) 2026 Karthick Balakrishnan
+
+Unauthorized copying, modification, distribution, 
+or commercial use is prohibited.
+*/
+
 # ScholarCanvas
 
 An academic research discovery dashboard inspired by CSRankings.org, built with React + Vite and Tailwind CSS v4, styled in the Apple Design System (light mode, glassmorphism, micro-borders).
